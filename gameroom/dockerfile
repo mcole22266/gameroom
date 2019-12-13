@@ -1,0 +1,20 @@
+FROM python:3.7.5-slim
+
+LABEL maintainer="Michael Cole <mcole042891@gmail.com"
+
+ENV APPDIR="/gameroom" \
+    FLASK_APP="wsgi.py" \
+    FLASK_ENV="docker" \
+    FLASK_DEBUG=1
+
+RUN mkdir ${APPDIR}
+WORKDIR ${APPDIR}
+
+COPY ./requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . ${APPDIR}
+
+EXPOSE 5000
+
+CMD [ "flask", "run", "--host=0.0.0.0", "--port=5000" ]
