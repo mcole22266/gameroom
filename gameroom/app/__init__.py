@@ -1,6 +1,7 @@
 from flask import Flask
 
 from .models import User
+from .extensions import database_ready
 
 
 def create_app():
@@ -11,14 +12,10 @@ def create_app():
 
         from .models import db
         db.init_app(app)
-        db.create_all()
-        db.session.commit()
 
-        user1 = User('Michael', 'Cole')
-        user2 = User('Chelsea', 'Givens')
-        db.session.add(user1)
-        db.session.add(user2)
-        db.session.commit()
+        if database_ready(db, app):
+            db.create_all()
+            db.session.commit()
 
         @app.route('/')
         def index():

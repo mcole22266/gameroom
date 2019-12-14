@@ -11,6 +11,10 @@ class Config:
     FLASK_HOST = environ['FLASK_HOST']
     FLASK_PORT = environ['FLASK_PORT']
 
+    DB_WAIT_INITIAL = environ['DB_WAIT_INITIAL']
+    DB_WAIT_MULTIPLIER = environ['DB_WAIT_MULTIPLIER']
+    DB_WAIT_MAX = environ['DB_WAIT_MAX']
+   
     # mysql config
     MYSQL_DATABASE = environ['MYSQL_DATABASE']
     MYSQL_ROOT_PASSWORD = environ['MYSQL_ROOT_PASSWORD']
