@@ -15,4 +15,12 @@ def create_app():
         def index():
             return 'Hello World'
 
+        @app.route('/test/db/view')
+        def test_db_view():
+            return 'test_db_view'
+
+        @app.route('/test/db/add/<col1>/<col2>')
+        def test_db_add(col1, col2):
+            return f'test_db_add: col1={col1} col2={col2}'
+
         return app
