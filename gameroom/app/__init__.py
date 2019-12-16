@@ -1,7 +1,7 @@
 from flask import Flask, render_template, redirect, url_for, request
 
 from .models import User
-from .forms import SignInForm
+from .forms import SignInForm, CreateUserForm
 from .extensions import database_ready
 
 
@@ -29,7 +29,7 @@ def create_app():
                                    title='Game Room')
 
         @app.route('/user/signin', methods=['GET', 'POST'])
-        def signin():
+        def user_signin():
             form = SignInForm()
 
             # POST
@@ -42,6 +42,25 @@ def create_app():
             # GET
             return render_template('signin.html',
                                    title="Game Room - Sign In",
+                                   form=form)
+
+        @app.route('/user/create', methods=['GET', 'POST'])
+        def user_create():
+            form = CreateUserForm()
+
+            # POST
+            if form.validate_on_submit():
+                fname = request.form.get('fname')
+                lname = request.form.get('lname')
+                email = request.form.get('email')
+                uname = request.form.get('uname')
+                pword = request.form.get('pword')
+                app.logger.info(f'Creating account for {uname} <{email}>')
+                return redirect(url_for('index'))
+
+            # GET
+            return render_template('createuser.html',
+                                   title="Game Room - Create Account",
                                    form=form)
 
         @app.route('/test/db/view')
