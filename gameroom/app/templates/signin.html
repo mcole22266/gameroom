@@ -24,15 +24,18 @@
                         {% endfor %}
                     {% endif %}
             </div>
+            <br>
 
             <!-- Password -->
             <div class="form-field">
+
                 {{ form.pword.label }}:
                 {{ form.pword(class_="form-control") }}
                     {% if form.pword.errors %}
                         {{ form.pword.errors }}
                     {% endif %}
             </div>
+            <br>
 
             <!-- Submit -->
             <br>
