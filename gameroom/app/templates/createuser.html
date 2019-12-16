@@ -1,0 +1,107 @@
+<!-- createuser.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container col-md-6">
+    <h1>Create an Account</h1>
+    <br>
+
+    <div class="justify-content-center">
+        <form method="POST" action="/user/create" role="form">
+            {{ form.csrf_token }}
+
+            <!-- First Name -->
+            <div class="form-field">
+                {{ form.fname.label }}:
+                {{form.fname(class_="form-control") }}
+                  {% if form.fname.errors %}
+                    {% for error in form.fname.errors %}
+                      <div class="alert alert-warning">
+                          {{ error }}
+                      </div>
+                    {% endfor %}
+                  {% endif %}
+            </div>
+            <br>
+
+            <!-- Last Name-->
+            <div class="form-field">
+                {{ form.lname.label }}:
+                {{form.lname(class_="form-control") }}
+                  {% if form.lname.errors %}
+                    {% for error in form.lname.errors %}
+                      <div class="alert alert-warning">
+                          {{ error }}
+                      </div>
+                    {% endfor %}
+                  {% endif %}
+            </div>
+            <br>
+
+            <!-- Email -->
+            <div class="form-field">
+                {{ form.email.label }}
+                {{ form.email(class_="form-control") }}
+                  {% if form.email.errors %}
+                    {% for error in form.email.errors %}
+                      <div class="alert alert-warning">
+                          {{ error }}
+                      </div>
+                    {% endfor %}
+                  {% endif %}
+            </div>
+            <br>
+
+            <!-- Username -->
+            <div class="form-field">
+                {{ form.uname.label }}
+                {{ form.uname(class_="form-control") }}
+                  {% if form.uname.errors %}
+                    {% for error in form.uname.errors %}
+                      <div class="alert alert-warning">
+                          {{ error }}
+                      </div>
+                    {% endfor %}
+                  {% endif %}
+            </div>
+            <br>
+
+            <!-- Password -->
+            <div class="form-field">
+                {{ form.pword.label }}
+                {{ form.pword(class_="form-control") }}
+                  {% if form.pword.errors %}
+                    {% for error in form.pword.errors %}
+                      <div class="alert alert-warning">
+                          {{ error }}
+                      </div>
+                    {% endfor %}
+                  {% endif %}
+            </div>
+            <br>
+
+            <!-- Password Confirm -->
+            <div class="form-field">
+
+                {{ form.pwordConfirm.label }}
+                {{ form.pwordConfirm(class_="form-control") }}
+                  {% if form.pwordConfirm.errors %}
+                    {% for error in form.pwordConfirm.errors %}
+                      <div class="alert alert-warning">
+                          {{ error }}
+                      </div>
+                    {% endfor %}
+                  {% endif %}
+            </div>
+            <br>
+
+            <!-- Submit -->
+            <br>
+            {{ form.submit(class_="btn btn-primary", style="float: right;")}}
+            <span>Already have an account? <a href="/user/signin">Sign in!</a></span>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

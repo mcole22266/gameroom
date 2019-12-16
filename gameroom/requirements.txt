@@ -1,4 +1,5 @@
 flask==1.1.1
 flask_sqlalchemy
+flask_wtf
 mysql-connector-python
 flake8

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <title>{{ title }}</title>
+        
+        <!-- Required Meta Tags-->
+        {% include 'meta.html' %}
+
+        <!-- Bootstrap -->
+        {% include 'styles.html' %}
+
+    </head>
+
+    <body>
+        <div class="container">
+
+            <a href="/">
+                <h1 class="logo">Game Room</h1>
+            </a>
+            <br>
+            <br>
+
+            {% block content %}{% endblock %}
+
+            {% include 'footer.html' %}
+
+        </div>
+        {% include 'scripts.html' %}
+    </body>
+
+</html>
