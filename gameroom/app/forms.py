@@ -21,12 +21,16 @@ class SignInForm(FlaskForm):
 class CreateUserForm(FlaskForm):
 
     fname = StringField('First Name', validators=[
+        Length(max=50,
+               message='First name cannot be longer than 50 characters'),
         Optional()
-    ])
+    ], render_kw={"placeholder": "Optional"})
 
     lname = StringField('Last Name', validators=[
+        Length(max=50,
+               message='Last name cannot be longer than 50 characters'),
         Optional()
-    ])
+    ], render_kw={"placeholder": "Optional"})
 
     email = StringField('Email', validators=[
         InputRequired(message='An Email is required.'),
