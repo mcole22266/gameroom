@@ -1,6 +1,7 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, redirect, url_for, request
 
 from .models import User
+from .forms import SignInForm
 from .extensions import database_ready
 
 
@@ -15,13 +16,33 @@ def create_app():
         from .models import db
         db.init_app(app)
 
+        from flask_wtf.csrf import CSRFProtect
+        CSRFProtect(app)
+
         if database_ready(db, app):
             db.create_all()
             db.session.commit()
 
         @app.route('/')
         def index():
-            return render_template('index.html', title='Game Room')
+            return render_template('index.html',
+                                   title='Game Room')
+
+        @app.route('/user/signin', methods=['GET', 'POST'])
+        def signin():
+            form = SignInForm()
+
+            # POST
+            if form.validate_on_submit():
+                uname = request.form.get('uname')
+                pword = request.form.get('pword')
+                app.logger.info(f'Username: {uname} | Password: {pword}')
+                return redirect(url_for('index'))
+
+            # GET
+            return render_template('signin.html',
+                                   title="Game Room - Sign In",
+                                   form=form)
 
         @app.route('/test/db/view')
         def test_db_view():
