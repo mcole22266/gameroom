@@ -1,11 +1,13 @@
-from flask import Flask
+from flask import Flask, render_template
 
 from .models import User
 from .extensions import database_ready
 
 
 def create_app():
-    app = Flask(__name__, instance_relative_config=False)
+    app = Flask(__name__, instance_relative_config=False,
+                template_folder='templates',
+                static_folder='static')
     app.config.from_object('config.Config')
 
     with app.app_context():
@@ -19,7 +21,7 @@ def create_app():
 
         @app.route('/')
         def index():
-            return 'Hello World'
+            return render_template('index.html', title='Game Room')
 
         @app.route('/test/db/view')
         def test_db_view():
