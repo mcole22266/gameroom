@@ -63,16 +63,4 @@ def create_app():
                                    title="Game Room - Create Account",
                                    form=form)
 
-        @app.route('/test/db/view')
-        def test_db_view():
-            results = User.query.all()
-            return f'<p>{results}</p>'
-
-        @app.route('/test/db/add/<col1>/<col2>')
-        def test_db_add(col1, col2):
-            user = User(col1, col2)
-            db.session.add(user)
-            db.session.commit()
-            return f'test_db_add: col1={col1} col2={col2}'
-
         return app
