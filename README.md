@@ -1,5 +1,6 @@
 # gameroom
 A website featuring various simple games such as board and card games along with simple 2d games. Built as a hobby project to gain workplace skills.
+---- WIP ----
 
 ### Maintainers
 - Michael Cole <mcole042891@gmail.com>
