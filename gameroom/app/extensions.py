@@ -1,5 +1,12 @@
 from os import environ
 from time import sleep
+from hashlib import sha256
+
+from flask_login import LoginManager
+
+
+login_manager = LoginManager()
+login_manager.login_view = 'login'
 
 
 def database_ready(db, app):
@@ -28,3 +35,8 @@ def database_ready(db, app):
             attemptNum += 1
 
     return success
+
+
+def encrypt(value):
+    encoded = value.encode()
+    return sha256(encoded).hexdigest()
