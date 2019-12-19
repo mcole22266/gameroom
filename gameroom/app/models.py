@@ -39,13 +39,14 @@ class User(db.Model):
                       nullable=False)
 
     def __init__(self, uname, pword, email,
-                 fname=None, lname=None):
+                 fname=None, lname=None, admin=False):
         self.fname = fname
         self.lname = lname
         self.email = email
-        self.uname = uname,
-        self.pword = pword,
+        self.uname = uname
+        self.pword = pword
         self.created_on = datetime.now()
+        self.admin = admin
 
     def __repr__(self):
         return f'User: {self.uname} <{self.email}> created on \

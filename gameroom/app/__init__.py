@@ -21,6 +21,10 @@ def create_app():
 
         if database_ready(db, app):
             db.create_all()
+            adminUser = User('admin', 'adminpass',
+                             'mcole042891@gmail.com',
+                             admin=True)
+            db.session.add(adminUser)
             db.session.commit()
 
         @app.route('/')
