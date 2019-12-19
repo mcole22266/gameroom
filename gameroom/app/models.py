@@ -2,10 +2,15 @@ from datetime import datetime
 
 from flask_sqlalchemy import SQLAlchemy
 
-from .extensions import encrypt
+from .extensions import encrypt, login_manager
 
 
 db = SQLAlchemy()
+
+
+@login_manager.user_loader
+def load_user(id):
+    return User.query.get(int(id))
 
 
 class User(db.Model):
@@ -32,24 +37,35 @@ class User(db.Model):
     created_on = db.Column(db.DateTime,
                            nullable=False)
 
-    active = db.Column(db.Boolean,
-                       default=True,
-                       nullable=False)
-
-    admin = db.Column(db.Boolean,
-                      default=False,
-                      nullable=False)
+    is_admin = db.Column(db.Boolean,
+                         default=False,
+                         nullable=False)
 
     def __init__(self, uname, pword, email,
-                 fname=None, lname=None, admin=False):
+                 fname=None, lname=None, is_admin=False):
         self.fname = fname
         self.lname = lname
         self.email = email
         self.uname = uname
         self.pword = encrypt(pword)
         self.created_on = datetime.now()
-        self.admin = admin
+        self.is_admin = is_admin
 
     def __repr__(self):
         return f'User: {self.uname} <{self.email}> created on \
                 {str(self.created_on)}'
+
+    def pwordCheck(self, pword):
+        return encrypt(pword) == self.pword
+
+    def is_authenticated(self):
+        return True
+
+    def is_active(self):
+        return True
+
+    def is_anonymous(self):
+        return False
+
+    def get_id(self):
+        return self.id

@@ -3,7 +3,7 @@
 
     <head>
         <title>{{ title }}</title>
-        
+
         <!-- Required Meta Tags-->
         {% include 'meta.html' %}
 
@@ -28,5 +28,14 @@
         </div>
         {% include 'scripts.html' %}
     </body>
+        {% with messages = get_flashed_messaged %}
+            {% if messages %}
+                <ul class="flashes">
+                    {% for message in messages %}
+                        <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
 
 </html>

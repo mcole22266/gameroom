@@ -4,7 +4,15 @@
     <ul class="nav">
       <li class="nav-item">
         <span class="navbar-text">
-          <h3>Welcome {USER}!</h3>
+          {% if current_user.is_active %}
+              {% if current_user.fname %}
+              <h3>Welcome {{current_user.fname}}!</h3>
+              {% else %}
+              <h3>Welcome {{current_user.uname}}!</h3>
+              {% endif %}
+          {% else %}
+              <h3>Please Sign In!</h3>
+          {% endif %}
         </span>
       </li>
     </ul>
@@ -17,7 +25,11 @@
         </div>
       </li>
       <li class="nav-item">
+        {% if current_user.is_active %}
+        <a href="/user/logout" class="nav-link">Log Out</a>
+        {% else %}
         <a href="/user/signin" class="nav-link">Log In</a>
+        {% endif %}
       </li>
     </ul>
   </nav>

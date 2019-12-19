@@ -1,8 +1,10 @@
-from flask import Flask, render_template, redirect, url_for, request
+from flask import Flask, render_template, redirect, url_for, request, flash
+
+from flask_login import current_user, login_required, login_user, logout_user
 
 from .models import User
 from .forms import SignInForm, CreateUserForm
-from .extensions import database_ready
+from .extensions import database_ready, login_manager
 
 
 def create_app():
@@ -19,12 +21,14 @@ def create_app():
         from flask_wtf.csrf import CSRFProtect
         CSRFProtect(app)
 
+        login_manager.init_app(app)
+
         if database_ready(db, app):
             db.create_all()
             if not User.query.filter_by(uname='admin').first():
                 adminUser = User('admin', 'adminpass',
                                  'mcole042891@gmail.com',
-                                 admin=True)
+                                 is_admin=True)
                 db.session.add(adminUser)
             db.session.commit()
 
@@ -35,13 +39,21 @@ def create_app():
 
         @app.route('/user/signin', methods=['GET', 'POST'])
         def user_signin():
+            if current_user.is_authenticated:
+                return redirect(url_for('index'))
             form = SignInForm()
 
             # POST
             if form.validate_on_submit():
                 uname = request.form.get('uname')
                 pword = request.form.get('pword')
-                app.logger.info(f'Username: {uname} | Password: {pword}')
+                user = User.query.filter_by(uname=uname).first()
+                if not user or not user.pwordCheck(pword):
+                    flash('Invalid username or password')
+                    return redirect(url_for('user_signin'))
+                else:
+                    login_user(user)
+                    return redirect(url_for('index'))
                 return redirect(url_for('index'))
 
             # GET
@@ -66,11 +78,19 @@ def create_app():
                 user = User(uname, pword, email, fname, lname)
                 db.session.add(user)
                 db.session.commit()
-                return redirect(url_for('index'))
+                flash('Account Created!')
+                return redirect(url_for('user_signin'))
 
             # GET
             return render_template('createuser.html',
                                    title="Game Room - Create Account",
                                    form=form)
+
+        @app.route('/user/logout')
+        @login_required
+        def user_logout():
+            logout_user()
+            flash('Successfully logged out')
+            return redirect(url_for('index'))
 
         return app
