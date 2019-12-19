@@ -2,6 +2,8 @@ from datetime import datetime
 
 from flask_sqlalchemy import SQLAlchemy
 
+from .extensions import encrypt
+
 
 db = SQLAlchemy()
 
@@ -44,7 +46,7 @@ class User(db.Model):
         self.lname = lname
         self.email = email
         self.uname = uname
-        self.pword = pword
+        self.pword = encrypt(pword)
         self.created_on = datetime.now()
         self.admin = admin
 

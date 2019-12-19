@@ -1,5 +1,6 @@
 from os import environ
 from time import sleep
+from hashlib import sha256
 
 
 def database_ready(db, app):
@@ -28,3 +29,8 @@ def database_ready(db, app):
             attemptNum += 1
 
     return success
+
+
+def encrypt(value):
+    encoded = value.encode()
+    return sha256(encoded).hexdigest()

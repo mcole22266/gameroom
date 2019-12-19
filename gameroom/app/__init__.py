@@ -21,10 +21,11 @@ def create_app():
 
         if database_ready(db, app):
             db.create_all()
-            adminUser = User('admin', 'adminpass',
-                             'mcole042891@gmail.com',
-                             admin=True)
-            db.session.add(adminUser)
+            if not User.query.filter_by(uname='admin').first():
+                adminUser = User('admin', 'adminpass',
+                                 'mcole042891@gmail.com',
+                                 admin=True)
+                db.session.add(adminUser)
             db.session.commit()
 
         @app.route('/')
@@ -55,11 +56,16 @@ def create_app():
             # POST
             if form.validate_on_submit():
                 fname = request.form.get('fname')
+                fname = fname if fname else None  # force null
                 lname = request.form.get('lname')
+                lname = lname if lname else None  # force null
                 email = request.form.get('email')
                 uname = request.form.get('uname')
                 pword = request.form.get('pword')
                 app.logger.info(f'Creating account for {uname} <{email}>')
+                user = User(uname, pword, email, fname, lname)
+                db.session.add(user)
+                db.session.commit()
                 return redirect(url_for('index'))
 
             # GET
